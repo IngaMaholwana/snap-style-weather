@@ -47,6 +47,11 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        weather: {
+          sunny: "hsl(var(--weather-sunny))",
+          cloudy: "hsl(var(--weather-cloudy))",
+          rainy: "hsl(var(--weather-rainy))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
