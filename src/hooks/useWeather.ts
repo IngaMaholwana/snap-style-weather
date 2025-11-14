@@ -4,7 +4,7 @@ import { weatherService } from "@/services/weatherService";
 import { WeatherData } from "@/types/weather";
 import { toast } from "@/hooks/use-toast";
 
-export const useWeather = (initialLocation: string = "Seattle, AU") => {
+export const useWeather = (initialLocation: string = "Seattle, USA") => {
   const [location, setLocation] = useState(initialLocation);
   const [unit, setUnit] = useState<"metric" | "us">("metric");
 

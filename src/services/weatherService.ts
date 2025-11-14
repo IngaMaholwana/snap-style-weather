@@ -4,7 +4,7 @@ class WeatherService {
   private API_KEY = "F8MXLZXQYEVGS58KTN4JLY7RX";
   private BASE_URL = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/";
 
-  async getData(location: string, unit: string = "us"): Promise<any> {
+  async getData(location: string, unit: string = "metric"): Promise<any> {
     const response = await fetch(
       `${this.BASE_URL}${location}?key=${this.API_KEY}&unitGroup=${unit}&include=hours,current`
     );
@@ -14,7 +14,7 @@ class WeatherService {
     return await response.json();
   }
 
-  async getWeather(location: string, unit: string = "us"): Promise<WeatherData> {
+  async getWeather(location: string, unit: string = "metric"): Promise<WeatherData> {
     try {
       const data = await this.getData(location, unit);
       return this.transformResponse(data);
