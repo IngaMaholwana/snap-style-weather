@@ -116,8 +116,11 @@ const Index = () => {
 
         {/* Charts and Details */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          <PrecipitationChart />
-          <InteractiveMap onLocationSelect={handleMapLocationSelect} />
+          <PrecipitationChart precipitation={weatherData.days} />
+          <InteractiveMap 
+            center={[weatherData.days[0]?.hours?.[0] ? 47.6062 : 20, weatherData.days[0]?.hours?.[0] ? -122.3321 : 0]} 
+            onLocationSelect={handleMapLocationSelect} 
+          />
           <OtherCities onCitySelect={handleSearch} favorites={favorites} />
         </div>
       </main>
