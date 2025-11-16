@@ -2,14 +2,13 @@ import { WeatherHeader } from "@/components/WeatherHeader";
 import { WeatherTabs } from "@/components/WeatherTabs";
 import { ForecastCard } from "@/components/ForecastCard";
 import { PrecipitationChart } from "@/components/PrecipitationChart";
-import { InteractiveMap } from "@/components/InteractiveMap";
+import { GlobalMap } from "@/components/GlobalMap";
 import { OtherCities } from "@/components/OtherCities";
 import { HourlyForecast } from "@/components/HourlyForecast";
 import { WeatherAlerts } from "@/components/WeatherAlerts";
 import { useWeather } from "@/hooks/useWeather";
 import { useFavoriteCities } from "@/hooks/useFavoriteCities";
 import { Skeleton } from "@/components/ui/skeleton";
-import { weatherService } from "@/services/weatherService";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 
@@ -26,7 +25,7 @@ const Index = () => {
     
     const cityData = {
       name: `${weatherData.city}, ${weatherData.country}`,
-      coordinates: { lat: 0, lng: 0 }, // Would need to store actual coordinates
+      coordinates: { lat: 0, lng: 0 },
     };
 
     if (isFavorite(cityData.name)) {
@@ -34,11 +33,6 @@ const Index = () => {
     } else {
       addFavorite(cityData);
     }
-  };
-
-  const handleMapLocationSelect = async (lat: number, lng: number) => {
-    const data = await weatherService.getWeatherByCoordinates(lat, lng);
-    setLocation(`${lat},${lng}`);
   };
 
   if (error) {
@@ -117,10 +111,7 @@ const Index = () => {
         {/* Charts and Details */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           <PrecipitationChart precipitation={weatherData.days} />
-          <InteractiveMap 
-            center={[20, 0]} 
-            onLocationSelect={handleMapLocationSelect} 
-          />
+          <GlobalMap city={weatherData.city} country={weatherData.country} />
           <OtherCities onCitySelect={handleSearch} favorites={favorites} />
         </div>
       </main>
