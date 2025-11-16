@@ -1,9 +1,17 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
-import { Icon } from "leaflet";
+import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { MapPin } from "lucide-react";
+
+// Fix Leaflet default icon issue
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+});
 
 interface InteractiveMapProps {
   center?: [number, number];
@@ -28,13 +36,6 @@ function MapController({ center }: { center: [number, number] }) {
 
 export const InteractiveMap = ({ center = [20, 0], onLocationSelect }: InteractiveMapProps) => {
   const [mapCenter, setMapCenter] = useState<[number, number]>(center);
-
-  const customIcon = useMemo(() => new Icon({
-    iconUrl: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMzYjgyZjYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cGF0aCBkPSJNMjAgMTBjMCA2LTggMTItOCAxMnMtOC02LTgtMTJhOCA4IDAgMCAxIDE2IDB6Ii8+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMCIgcj0iMyIvPjwvc3ZnPg==",
-    iconSize: [32, 32],
-    iconAnchor: [16, 32],
-    popupAnchor: [0, -32],
-  }), []);
 
   useEffect(() => {
     setMapCenter(center);
@@ -67,7 +68,6 @@ export const InteractiveMap = ({ center = [20, 0], onLocationSelect }: Interacti
               <Marker
                 key={city.name}
                 position={city.coords}
-                icon={customIcon}
                 eventHandlers={{
                   click: () => {
                     if (onLocationSelect) {
